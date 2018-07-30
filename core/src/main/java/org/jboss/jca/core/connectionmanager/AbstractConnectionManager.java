@@ -632,7 +632,11 @@ public abstract class AbstractConnectionManager implements ConnectionManager
       }
       catch (Throwable t)
       {
-         disconnectManagedConnection(cl);
+         // the connection is bad, why return it at all?
+         // a question though: Do I need to delist this?
+         returnManagedConnection(cl, true);
+         // disconnectManagedConnection(cl); -- this seems broken. .this will return the connection back to the pool
+         // and that has bad consequences
          throw new ResourceException(bundle.uncheckedThrowableInManagedConnectionReconnected(cl), t);
       }
    }
